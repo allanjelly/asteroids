@@ -51,12 +51,19 @@ def main():
 # somehow you only have to call update once
         updatable.update(dt)
 
-# colision detection
+# colision detection (player vs asteroids)
         for circle in asteroids:
             collision = circle.check_collision(player)
             if collision:
                 print ("Game over!")
                 return
+            
+# colision detection (shots vs asteroids)
+        for circle in asteroids:
+            for shot in shots:
+                if circle.check_collision(shot):
+                    circle.split()
+                    shot.kill()
 
 # but you have to itarate to draw                
         for thing in drawable:
