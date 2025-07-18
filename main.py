@@ -3,6 +3,7 @@ from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from shot import Shot
 
 def main():
     print("Starting Asteroids!!")
@@ -18,11 +19,13 @@ def main():
     drawable = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
 # class attributes    
     Player.containers = (drawable,updatable)
     Asteroid.containers = (drawable,updatable,asteroids)
     AsteroidField.containers = (updatable)
+    Shot.containers = (drawable, updatable, shots)
 
 # create screen
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -47,6 +50,13 @@ def main():
 
 # somehow you only have to call update once
         updatable.update(dt)
+
+# colision detection
+        for circle in asteroids:
+            collision = circle.check_collision(player)
+            if collision:
+                print ("Game over!")
+                return
 
 # but you have to itarate to draw                
         for thing in drawable:
